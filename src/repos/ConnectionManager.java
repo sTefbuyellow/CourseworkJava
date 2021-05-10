@@ -7,9 +7,9 @@ import java.util.logging.Logger;
 
 public class ConnectionManager {
 
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "colt1911";
-    private static final String URL = "jdbc:mysql://localhost:3306/studenthostel";
+    private static final String USERNAME = "remote-user";
+    private static final String PASSWORD = "cOlT-1911";
+    private static final String URL = "jdbc:mysql://netfixer.tk:3306/studenthostel";
     private Connection connection;
 
     private final Logger logger = Logger.getLogger(ConnectionManager.class.getName());

@@ -37,7 +37,17 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void create(Room room) {
-        roomRepository.create(room);
+    public boolean create(Room room) {
+        return roomRepository.create(room);
+    }
+
+    @Override
+    public boolean update(Room room, int oldId) {
+        return roomRepository.update(room, oldId);
+    }
+
+    @Override
+    public boolean delete(int id) {
+        return roomRepository.delete(id);
     }
 }

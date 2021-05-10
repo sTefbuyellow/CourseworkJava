@@ -29,4 +29,19 @@ public class StudentServiceImpl implements StudentService {
     public Student getById(int id) {
         return studentRepository.getById(id);
     }
+
+    @Override
+    public boolean create(Student student) {
+       return studentRepository.create(student);
+    }
+
+    @Override
+    public boolean update(Student student, int oldId) {
+        return studentRepository.update(student, oldId);
+    }
+
+    @Override
+    public boolean delete(int studentId) {
+        return studentRepository.delete(studentId);
+    }
 }

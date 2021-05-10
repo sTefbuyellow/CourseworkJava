@@ -8,5 +8,7 @@ public interface RoomRepository {
     Collection<Room> getAll();
     Room getById(int id);
     int getStudentsCount(int id);
-    void create(Room room);
+    boolean create(Room room);
+    boolean update(Room room, int oldId);
+    boolean delete(int roomId);
 }

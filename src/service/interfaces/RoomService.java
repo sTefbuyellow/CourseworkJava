@@ -10,5 +10,7 @@ public interface RoomService {
     Collection<Room> getAllRooms();
     Collection<Student> getStudentsByRoom(int id);
     Room getById(int id);
-    void create(Room room);
+    boolean create(Room room);
+    boolean update(Room room, int oldId);
+    boolean delete(int id);
 }

@@ -36,10 +36,10 @@ public class MainFrame extends JFrame {
         helpingFrame.setVisible(false);
 
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Комнаты", new RoomPanel(roomService));
-        tabbedPane.addTab("Студенты", new StudentPanel(studentService));
+        tabbedPane.addTab("Комнаты", new RoomPanel(roomService, studentService));
+        tabbedPane.addTab("Студенты", new StudentPanel(studentService, roomService));
         tabbedPane.addTab("Добавить комнату", new CreateRoomPanel(roomService));
-        tabbedPane.addTab("Добавить студента", new CreateStudentPanel(studentService));
+        tabbedPane.addTab("Добавить студента", new CreateStudentPanel(studentService, roomService));
         getContentPane().add(tabbedPane);
 
         addWindowListener(new WindowAdapter() {

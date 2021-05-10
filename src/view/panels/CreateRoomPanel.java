@@ -11,6 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static view.components.MassageViewer.showErrorMessage;
+import static view.components.MassageViewer.showMessage;
+
 public class CreateRoomPanel extends JPanel {
 
     private RoomService roomService;
@@ -22,7 +25,7 @@ public class CreateRoomPanel extends JPanel {
         this.roomService = roomService;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel fieldsPanel = new JPanel();
-        fieldsPanel.setLayout(new GridLayout(3,2,20,20));
+        fieldsPanel.setLayout(new GridLayout(3, 2, 20, 20));
 
         roomNumber = new CustomJTextField("");
         flore = new CustomJTextField("");
@@ -47,42 +50,34 @@ public class CreateRoomPanel extends JPanel {
         add(createRoomButton);
     }
 
-    public void showErrorMessage(String message){
-        JOptionPane.showMessageDialog(CreateRoomPanel.this,
-                new String[] {"Ошибка :",
-                              message},
-                "Ошибка",
-                JOptionPane.ERROR_MESSAGE);
-    }
-
-    public void showMessage(String message){
-            JOptionPane.showMessageDialog(CreateRoomPanel.this,
-                    "Комната успешно добавлена");
-    }
-
-
     private class CreateRoomActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (!ValidatorService.isRoomValid(roomNumber.getText(),
                     flore.getText(), bedsCount.getText())) {
-                showErrorMessage("Убедитесь, что все поля заполнены в верном формате.");
+                showErrorMessage("Убедитесь, что все поля заполнены в верном формате.", CreateRoomPanel.this);
                 return;
             }
             if (!ValidatorService.isRoomNumberFieldsValid(roomNumber.getText(),
-                    flore.getText(), bedsCount.getText())){
-                showErrorMessage("Пожалуйста, укажите реалистичные значения.");
+                    flore.getText(), bedsCount.getText())) {
+                showErrorMessage("Пожалуйста, укажите реалистичные значения.", CreateRoomPanel.this);
                 return;
             }
-            roomService.create(new Room(Integer.parseInt(roomNumber.getText()),
+            Room selectedRoom = roomService.getById(Integer.parseInt(roomNumber.getText()));
+            if (selectedRoom != null) {
+                showErrorMessage("Комната № " + roomNumber.getText() + "уже существует.", CreateRoomPanel.this);
+                return;
+            }
+            Room room = new Room(Integer.parseInt(roomNumber.getText()),
                     Integer.parseInt(flore.getText()),
-                    Integer.parseInt(bedsCount.getText())));
-            showMessage("Комната успешно добавлена!");
+                    Integer.parseInt(bedsCount.getText()));
+            if (roomService.create(room))
+                showMessage("Комната успешно добавлена!", CreateRoomPanel.this);
+            else
+                showErrorMessage("Ошибка при добавлении комнаты.", CreateRoomPanel.this);
             roomNumber.setText("");
             flore.setText("");
             bedsCount.setText("");
-
         }
-
     }
 
 }

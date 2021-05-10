@@ -21,21 +21,21 @@ public class RoomPanel extends JPanel {
     private RoomService roomService;
     private StudentService studentService;
 
-    public RoomPanel(RoomService roomService) {
-        this.roomService = roomService;
+    public RoomPanel(RoomService roomService, StudentService studentService) {
         this.studentService = studentService;
+        this.roomService = roomService;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(new CustomLabel("Список комнат"));
         ArrayList<Room> roomArrayList = (ArrayList<Room>) roomService.getAllRooms();
-        String[][] roomsString = toRoomsList(roomArrayList);
+        Object[][] roomsString = toRoomsList(roomArrayList);
         RoomsTableMouseListener roomsTableMouseListener = new RoomsTableMouseListener();
         add(TableBuilder.buildTable(roomsString, new String[]{"Номер комнаты",
                 "Этаж", "Количество мест", "Занято мест"}, roomsTableMouseListener));
     }
 
-    public String[][] toRoomsList(ArrayList<Room> roomArrayList){
+    public Object[][] toRoomsList(ArrayList<Room> roomArrayList) {
         Room[] rooms = roomArrayList.toArray(new Room[0]);
-        String[][] roomsString = new String[rooms.length][4];
+        Object[][] roomsString = new String[rooms.length][4];
         for (int i = 0; i < rooms.length; i++) {
             roomsString[i][0] = Integer.toString(rooms[i].getId());
             roomsString[i][1] = Integer.toString(rooms[i].getFlore());
@@ -53,13 +53,11 @@ public class RoomPanel extends JPanel {
                 int row = table.getSelectedRow();
                 String value = table.getModel().getValueAt(row, column).toString();
                 MainFrame.helpingFrame.dispatchEvent(new WindowEvent(MainFrame.helpingFrame, WindowEvent.WINDOW_CLOSING));
-                MainFrame.helpingFrame = new HelpingFrame(400, 250, new CustomLabel("Комната № " + value),
-                        new EditRoomPanel(roomService, Integer.parseInt(value)));
+                MainFrame.helpingFrame = new HelpingFrame(500, 400, new CustomLabel("Комната № " + value),
+                        new EditRoomPanel(roomService, studentService, Integer.parseInt(value)));
             }
         }
     }
-
-
 
 
 }

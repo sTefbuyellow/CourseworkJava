@@ -14,12 +14,12 @@ public class Student {
     private String secondName;
     private String fathersName;
     private Sex sex;
-    private long group;
+    private int group;
     private int course;
     private int roomId;
 
     public Student(int id, String name, String secondName, String fathersName,
-                   Sex sex, long group, int course, int roomId){
+                   Sex sex, int group, int course, int roomId){
         this.id = id;
         this.name = name;
         this.secondName = secondName;
@@ -55,7 +55,7 @@ public class Student {
         return sex;
     }
 
-    public long getGroup() {
+    public int getGroup() {
         return group;
     }
 
@@ -65,6 +65,14 @@ public class Student {
 
     public int getRoomId() {
         return roomId;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 }
 

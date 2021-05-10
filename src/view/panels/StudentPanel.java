@@ -1,6 +1,7 @@
 package view.panels;
 
 import model.Student;
+import service.interfaces.RoomService;
 import service.interfaces.StudentService;
 import view.components.CustomLabel;
 import view.components.TableBuilder;
@@ -15,8 +16,10 @@ public class StudentPanel extends JPanel {
 
     private static int selectedRow = 0;
     private StudentService studentService;
+    private RoomService roomService;
 
-    public StudentPanel(StudentService studentService) {
+    public StudentPanel(StudentService studentService, RoomService roomService) {
+        this.roomService = roomService;
         this.studentService = studentService;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         ArrayList<Student> studentsArrayList = (ArrayList<Student>) studentService.getAll();
@@ -51,16 +54,11 @@ public class StudentPanel extends JPanel {
                 String value = table.getModel().getValueAt(row, column).toString();
                 MainFrame.helpingFrame.dispatchEvent(new WindowEvent(MainFrame.helpingFrame, WindowEvent.WINDOW_CLOSING));
                 MainFrame.helpingFrame = new HelpingFrame(400, 540, new CustomLabel("Студент № " + value),
-                        new EditStudentPanel(studentService, Integer.parseInt(value)));
+                        new EditStudentPanel(studentService, roomService, Integer.parseInt(value)));
             }
         }
     }
 
-    private static class CustomActionListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println(selectedRow);
-        }
-    }
+
 
 }
