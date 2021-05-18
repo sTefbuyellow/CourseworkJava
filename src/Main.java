@@ -1,12 +1,25 @@
 import repos.ConnectionManager;
-import view.frames.MainFrame;
+import view.frames.SplashScreenFrame;
 
-import java.sql.SQLException;
 
+/**
+ * Entry class of the application
+ *
+ * @author Kirichuk K.N.
+ * @version 0.01 25.02.2021
+ */
 public class Main {
-    public static void main(String[] args) throws SQLException {
+
+    /**
+     * Entry point of the application.
+     * Creates <code>SplashScreen</code> object .
+     *
+     * @param args command line arguments of the application
+     */
+    public static void main(String[] args) {
         ConnectionManager connectionManager = new ConnectionManager();
-        MainFrame studentFrame = new MainFrame(connectionManager);
+        new SplashScreenFrame(connectionManager);
 
     }
 }
+

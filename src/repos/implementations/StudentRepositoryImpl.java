@@ -10,6 +10,14 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * A <code>StudentRepositoryImpl</code> class implements
+ * <code>StudentRepository</code> interface and describes
+ * methods for interacting with the student table.
+ *
+ * @author Kirichuk K.N.
+ * @version 0.01 04.03.2021
+ */
 public class StudentRepositoryImpl implements StudentRepository {
 
     Connection connection;
@@ -20,6 +28,9 @@ public class StudentRepositoryImpl implements StudentRepository {
         this.connection = connection;
     }
 
+    /**
+     * @return <code>Collection</code> of all students
+     */
     @Override
     public ArrayList<Student> getAll() {
         Statement statement = null;
@@ -46,6 +57,10 @@ public class StudentRepositoryImpl implements StudentRepository {
         }
     }
 
+    /**
+     * @param id student id
+     * @return <code>Student</code> class object
+     */
     @Override
     public Student getById(int id) {
         Statement statement = null;
@@ -74,6 +89,10 @@ public class StudentRepositoryImpl implements StudentRepository {
         }
     }
 
+    /**
+     * @param id room id
+     * @return <code>Collection</code> of students in selected room
+     */
     @Override
     public Collection<Student> getAllByRoomId(int id) {
         Statement statement = null;
@@ -100,6 +119,10 @@ public class StudentRepositoryImpl implements StudentRepository {
         }
     }
 
+    /**
+     * @param id of student witch will be deleted
+     * @return <code>true</code> if student deleted successful, <code>false</code> otherwise
+     */
     @Override
     public boolean delete(int id) {
         PreparedStatement statement = null;
@@ -122,6 +145,11 @@ public class StudentRepositoryImpl implements StudentRepository {
         }
     }
 
+    /**
+     * @param student <code>Student</code> class object
+     * @param oldId id of student  witch will be updated
+     * @return <code>true</code> if student updated successful, <code>false</code> otherwise
+     */
     @Override
     public boolean update(Student student, int oldId) {
         PreparedStatement statement = null;
@@ -154,6 +182,10 @@ public class StudentRepositoryImpl implements StudentRepository {
         }
     }
 
+    /**
+     * @param student <code>Student</code> class object
+     * @return <code>true</code> if student created successful, <code>false</code> otherwise
+     */
     @Override
     public boolean create(Student student) {
         PreparedStatement statement = null;

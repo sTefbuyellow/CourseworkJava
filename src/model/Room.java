@@ -1,8 +1,11 @@
 package model;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+/**
+ * <code>Room</code> class model.
+ *
+ * @author Kirichuk K.N.
+ * @version 0.01 25.02.2021
+ */
 public class Room {
     private int id;
     private int flore;
@@ -17,7 +20,7 @@ public class Room {
 
     @Override
     public String toString(){
-        return id+","+flore+","+bedsCount;
+        return "Комната №" + id+", этаж "+flore+", количество мест: "+bedsCount;
     }
 
     public int getId() {
@@ -38,5 +41,17 @@ public class Room {
 
     public void setStudents(int students) {
         this.students = students;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFlore(int flore) {
+        this.flore = flore;
+    }
+
+    public void setBedsCount(int bedsCount) {
+        this.bedsCount = bedsCount;
     }
 }

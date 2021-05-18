@@ -8,6 +8,14 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+/**
+ * A <code>RoomRepositoryImpl</code> class implements
+ * <code>RoomRepository</code> interface and describes
+ * methods for interacting with the room table.
+ *
+ * @author Kirichuk K.N.
+ * @version 0.01 04.03.2021
+ */
 public class RoomRepositoryImpl implements RoomRepository {
 
     Connection connection;
@@ -16,8 +24,15 @@ public class RoomRepositoryImpl implements RoomRepository {
         this.connection = connection;
     }
 
+    /**
+     * <code>Logger</code> class object to log runtime info
+     */
     private static final Logger logger = Logger.getLogger(RoomRepositoryImpl.class.getName());
 
+    /**
+     * @return <code>Collection</code> of all rooms
+     */
+    @Override
     public ArrayList<Room> getAll() {
         Statement statement = null;
         ResultSet resultSet = null;
@@ -31,18 +46,23 @@ public class RoomRepositoryImpl implements RoomRepository {
             return rooms;
         } catch (SQLException e) {
             try {
-                if(resultSet != null)
+                if (resultSet != null)
                     resultSet.close();
-                if(statement != null)
+                if (statement != null)
                     statement.close();
             } catch (SQLException throwable) {
                 logger.info("Exception during statement or resultSet close");
             }
-            logger.log(Level.SEVERE,"Error during room select", e);
+            logger.log(Level.SEVERE, "Error during room select", e);
             return null;
         }
     }
 
+    /**
+     * @param id student id
+     * @return student by id
+     */
+    @Override
     public Room getById(int id) {
         Statement statement = null;
         ResultSet resultSet = null;
@@ -53,23 +73,28 @@ public class RoomRepositoryImpl implements RoomRepository {
             ArrayList<Room> rooms = getRooms(resultSet);
             statement.close();
             resultSet.close();
-            if(rooms.size() == 0)
+            if (rooms.size() == 0)
                 return null;
             return rooms.get(0);
         } catch (SQLException e) {
             try {
-                if(resultSet != null)
+                if (resultSet != null)
                     resultSet.close();
-                if(statement != null)
+                if (statement != null)
                     statement.close();
             } catch (SQLException throwable) {
                 logger.info("Exception during statement or resultSet close");
             }
-            logger.log(Level.SEVERE,"Error during room select", e);
+            logger.log(Level.SEVERE, "Error during room select", e);
             return null;
         }
     }
 
+    /**
+     * @param id room id
+     * @return count of students in selected room
+     */
+    @Override
     public int getStudentsCount(int id) {
         Statement statement = null;
         ResultSet resultSet = null;
@@ -86,18 +111,22 @@ public class RoomRepositoryImpl implements RoomRepository {
             return count;
         } catch (SQLException e) {
             try {
-                if(resultSet != null)
+                if (resultSet != null)
                     resultSet.close();
-                if(statement != null)
+                if (statement != null)
                     statement.close();
-            } catch (SQLException throwables) {
+            } catch (SQLException throwable) {
                 logger.info("Exception during statement or resultSet close");
             }
-            logger.log(Level.SEVERE,"Error during students count select", e);
+            logger.log(Level.SEVERE, "Error during students count select", e);
             return 0;
         }
     }
 
+    /**
+     * @param room <code>Room</code> class object
+     * @return <code>true</code> if user created successful, <code>false</code> otherwise
+     */
     @Override
     public boolean create(Room room) {
         PreparedStatement statement = null;
@@ -112,9 +141,9 @@ public class RoomRepositoryImpl implements RoomRepository {
             return true;
         } catch (SQLException e) {
             try {
-                if(statement != null)
+                if (statement != null)
                     statement.close();
-            } catch (SQLException throwables) {
+            } catch (SQLException throwable) {
                 logger.info("Exception during statement close");
             }
             logger.info("Exception during room create");
@@ -122,6 +151,11 @@ public class RoomRepositoryImpl implements RoomRepository {
         }
     }
 
+    /**
+     * @param room <code>Room</code> class object
+     * @param oldId id of room
+     * @return <code>true</code> if user updated successful, <code>false</code> otherwise
+     */
     @Override
     public boolean update(Room room, int oldId) {
         PreparedStatement statement = null;
@@ -137,7 +171,7 @@ public class RoomRepositoryImpl implements RoomRepository {
             return true;
         } catch (SQLException e) {
             try {
-                if(statement != null)
+                if (statement != null)
                     statement.close();
             } catch (SQLException throwable) {
                 logger.info("Exception during statement close");
@@ -147,6 +181,10 @@ public class RoomRepositoryImpl implements RoomRepository {
         }
     }
 
+    /**
+     * @param roomId id of room
+     * @return <code>true</code> if user deleted successful, <code>false</code> otherwise
+     */
     @Override
     public boolean delete(int roomId) {
         PreparedStatement statement = null;
@@ -159,7 +197,7 @@ public class RoomRepositoryImpl implements RoomRepository {
             return true;
         } catch (SQLException e) {
             try {
-                if(statement != null)
+                if (statement != null)
                     statement.close();
             } catch (SQLException throwable) {
                 logger.info("Exception during statement close");
@@ -180,7 +218,7 @@ public class RoomRepositoryImpl implements RoomRepository {
             }
             return rooms;
         } catch (SQLException e) {
-            logger.log(Level.SEVERE,"Error during room object create", e);
+            logger.log(Level.SEVERE, "Error during room object create", e);
             return new ArrayList<>();
         }
     }

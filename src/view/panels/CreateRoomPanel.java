@@ -1,7 +1,7 @@
 package view.panels;
 
 import model.Room;
-import service.implementations.ValidatorService;
+import service.ValidatorService;
 import service.interfaces.RoomService;
 import view.components.CustomJTextField;
 import view.components.CustomLabel;
@@ -11,18 +11,38 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static view.components.MassageViewer.showErrorMessage;
-import static view.components.MassageViewer.showMessage;
+import static service.MassageViewer.showErrorMessage;
+import static service.MassageViewer.showMessage;
+import static service.ValidatorService.generateRoomErrorString;
 
+/**
+ * A <code>CreateRoomPanel</code> class is an extended
+ * version of <code>JPanel</code> that contains input fields
+ * to create new room.
+ *
+ * @author Kirichuk K.N.
+ * @version 0.01 25.02.2021
+ */
 public class CreateRoomPanel extends JPanel {
 
-    private RoomService roomService;
-    private CustomJTextField roomNumber;
-    private CustomJTextField flore;
-    private CustomJTextField bedsCount;
+    private final RoomService roomService;
+    private final RoomPanel roomPanel;
+    private final StudentPanel studentPanel;
+    private final CustomJTextField roomNumber;
+    private final CustomJTextField flore;
+    private final CustomJTextField bedsCount;
 
-    public CreateRoomPanel(RoomService roomService) {
+    /**
+     * A <code>CreateRoomPanel</code> class object contains fields to create new room.
+     *
+     * @param roomService a <code>RoomService</code> class object.
+     * @param roomPanel a <code>RoomPanel</code> class object.
+     * @param studentPanel a <code>StudentService</code> class object.
+     */
+    public CreateRoomPanel(RoomService roomService, RoomPanel roomPanel, StudentPanel studentPanel) {
         this.roomService = roomService;
+        this.roomPanel = roomPanel;
+        this.studentPanel = studentPanel;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JPanel fieldsPanel = new JPanel();
         fieldsPanel.setLayout(new GridLayout(3, 2, 20, 20));
@@ -50,30 +70,41 @@ public class CreateRoomPanel extends JPanel {
         add(createRoomButton);
     }
 
+
+    /**
+     * Create room button listener.
+     *
+     * Validates room fields and creates new room.
+     */
     private class CreateRoomActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            if (!ValidatorService.isRoomValid(roomNumber.getText(),
-                    flore.getText(), bedsCount.getText())) {
-                showErrorMessage("Убедитесь, что все поля заполнены в верном формате.", CreateRoomPanel.this);
+            boolean[] validationResult = ValidatorService.isRoomNotValid(roomNumber.getText(),
+                    flore.getText(), bedsCount.getText());
+            if (validationResult[0] || validationResult[1] || validationResult[2]) {
+                showErrorMessage(generateRoomErrorString(validationResult), CreateRoomPanel.this);
                 return;
             }
-            if (!ValidatorService.isRoomNumberFieldsValid(roomNumber.getText(),
-                    flore.getText(), bedsCount.getText())) {
-                showErrorMessage("Пожалуйста, укажите реалистичные значения.", CreateRoomPanel.this);
+            validationResult = ValidatorService.isRoomNumberFieldsNotValid(roomNumber.getText(),
+                    flore.getText(), bedsCount.getText());
+            if (validationResult[0] || validationResult[1] || validationResult[2]) {
+                showErrorMessage(generateRoomErrorString(validationResult), CreateRoomPanel.this);
                 return;
             }
             Room selectedRoom = roomService.getById(Integer.parseInt(roomNumber.getText()));
             if (selectedRoom != null) {
-                showErrorMessage("Комната № " + roomNumber.getText() + "уже существует.", CreateRoomPanel.this);
+                showErrorMessage(new String[]{"Ошибка: ","Комната № " + roomNumber.getText() + "уже существует."}, CreateRoomPanel.this);
                 return;
             }
             Room room = new Room(Integer.parseInt(roomNumber.getText()),
                     Integer.parseInt(flore.getText()),
                     Integer.parseInt(bedsCount.getText()));
-            if (roomService.create(room))
+            if (roomService.create(room)) {
                 showMessage("Комната успешно добавлена!", CreateRoomPanel.this);
+                roomPanel.revalidatePanel();
+                studentPanel.revalidatePanel();
+            }
             else
-                showErrorMessage("Ошибка при добавлении комнаты.", CreateRoomPanel.this);
+                showErrorMessage(new String[]{"Ошибка: ","Ошибка при добавлении комнаты."}, CreateRoomPanel.this);
             roomNumber.setText("");
             flore.setText("");
             bedsCount.setText("");
